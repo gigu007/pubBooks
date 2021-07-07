@@ -7,6 +7,8 @@ const router = express.Router();
 
 
 router.get('/:id', async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id))
+    return res.status(404).send('Invalid ID')
   const actionBooks= await ActionBooks.findById();
   res.send(actionBooks);
 });

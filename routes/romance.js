@@ -1,3 +1,4 @@
+const validateObjectId=require('../middleware/validateObjectId');
 const {  Romance, validate} = require('../models/romance'); 
 const {Genre} = require('../models/genres');
 const mongoose = require('mongoose');
@@ -68,7 +69,9 @@ router.delete('/:id', async (req, res) => {
   res.send(romance);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',validateObjectId, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id))
+    return res.status(404).send('Invalid ID')
   const romance = await Romance.findById(req.params.id);
 
   if (!romance) return res.status(404).send('The romance with the given ID was not found.');

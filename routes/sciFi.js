@@ -1,3 +1,4 @@
+const validateObjectId=require('../middleware/validateObjectId');
 const { SciFi, validate} = require('../models/sciFi'); 
 const {Genre} = require('../models/genres');
 const mongoose = require('mongoose');
@@ -68,7 +69,9 @@ router.delete('/:id', async (req, res) => {
   res.send(sciFi);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',validateObjectId, async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id))
+    return res.status(404).send('Invalid ID')
   const sciFi = await SciFi.findById(req.params.id);
 
   if (!sciFi) return res.status(404).send('The sciFi with the given ID was not found.');

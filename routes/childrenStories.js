@@ -1,15 +1,17 @@
+const validateObjectId=require('../middleware/validateObjectId');
+const asyncMiddleware=require('../middleware/async');
 const { Children, validate} = require('../models/childrenStories'); 
 const {Genre} = require('../models/genres');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/',asyncMiddleware, async (req, res) => {
   const children= await Children.find().sort('name')
   res.send(children);
 });
 
-router.post('/', async (req, res) => {
+router.post('/',asyncMiddleware, async (req, res) => {
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -32,7 +34,7 @@ router.post('/', async (req, res) => {
   res.send(children);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',asyncMiddleware, async (req, res) => {
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -60,7 +62,7 @@ router.put('/:id', async (req, res) => {
   res.send(children);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',asyncMiddleware, async (req, res) => {
   const children = await Children.findByIdAndRemove(req.params.id);
 
   if (!children) return res.status(404).send('The children story  with the given ID was not found.');
@@ -68,7 +70,8 @@ router.delete('/:id', async (req, res) => {
   res.send(children);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',validateObjectId,asyncMiddleware, async (req, res) => {
+  
   const children = await Children.findById(req.params.id);
 
   if (!children) return res.status(404).send('The children story with the given ID was not found.');

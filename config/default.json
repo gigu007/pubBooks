@@ -1,1 +1,4 @@
-
+{
+    "jwtPrivateKey":"pubBooks_jwtPrivateKey",
+    "db":"mongodb://localhost/pubBooks"
+}

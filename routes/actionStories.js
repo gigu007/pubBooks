@@ -1,3 +1,4 @@
+const validateObjectId=require('../middleware/validateObjectId');
 const { Action, validate} = require('../models/actionStories'); 
 const {Genre} = require('../models/genres');
 const mongoose = require('mongoose');
@@ -68,7 +69,8 @@ router.delete('/:id', async (req, res) => {
   res.send(action);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',validateObjectId, async (req, res) => {
+  
   const action = await Action.findById(req.params.id);
 
   if (!action) return res.status(404).send('The action story with the given ID was not found.');

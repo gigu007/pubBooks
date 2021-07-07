@@ -1,15 +1,17 @@
+const validateObjectId=require('../middleware/validateObjectId');
+const asyncMiddleware=require('../middleware/async');
 const { Horror, validate} = require('../models/horror'); 
 const {Genre} = require('../models/genres');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/',asyncMiddleware, async (req, res) => {
   const horrors= await Horror.find().sort('name')
   res.send(horrors);
 });
 
-router.post('/', async (req, res) => {
+router.post('/',asyncMiddleware, async (req, res) => {
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -33,7 +35,7 @@ router.post('/', async (req, res) => {
   res.send(horror);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',asyncMiddleware, async (req, res) => {
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -60,7 +62,7 @@ router.put('/:id', async (req, res) => {
   res.send(horror);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',asyncMiddleware, async (req, res) => {
   const horror = await Horror.findByIdAndRemove(req.params.id);
 
   if (!horror) return res.status(404).send('The horror with the given ID was not found.');
@@ -68,7 +70,8 @@ router.delete('/:id', async (req, res) => {
   res.send(horror);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',validateObjectId,asyncMiddleware, async (req, res) => {
+  
   const horror = await Horror.findById(req.params.id);
 
   if (!horror) return res.status(404).send('The movie with the given ID was not found.');
