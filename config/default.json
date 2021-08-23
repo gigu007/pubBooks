@@ -1,5 +1,6 @@
 {
-    "jwtPrivateKey":"pubBooks_jwtPrivateKey",
+    "jwtPrivateKey":"",
+    "db":"mongodb://localhost/pubBooks"
     
-    "db":"mongodb+srv://miniadmin:lastdays008@cluster0.d3j94.mongodb.net/test"
+   
 }

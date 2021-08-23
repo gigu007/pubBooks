@@ -1,13 +1,8 @@
-const logger = require('./startup/login');
-// const winston=require('winston');
 const express=require('express');
-// const winston = require('winston/lib/winston/config');
+// const config=require('config');
+
 const app=express();
 require('./startup/db')();
 require('./startup/routes')(app);
-require('./startup/prod')(app);
-require('./startup/config')();
-require('./startup/validation')();
-const port=process.env.PORT || 2678;
-const server=app.listen(port,()=>logger.info(`Listening on port ${port}....`));
-module.exports=server;
+const port=process.env.PORT ||3000;
+app.listen(port,()=>console.log(`listening on port ${port}`)); 

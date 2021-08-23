@@ -1,4 +1,3 @@
-const validateObjectId=require('../middleware/validateObjectId');
 const { Action, validate} = require('../models/actionStories'); 
 const {Genre} = require('../models/genres');
 const mongoose = require('mongoose');
@@ -69,7 +68,7 @@ router.delete('/:id', async (req, res) => {
   res.send(action);
 });
 
-router.get('/:id',validateObjectId, async (req, res) => {
+router.get('/:id', async (req, res) => {
   
   const action = await Action.findById(req.params.id);
 
